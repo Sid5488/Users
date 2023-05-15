@@ -1,0 +1,185 @@
+<mat-toolbar class="toolNav success">
+  <mat-toolbar-row class="toolbar">
+    <div>
+      <span class="mr-2">Users</span>
+      <span>Web.API</span>
+    </div>
+
+    <span class="example-spacer"></span>
+
+    <a
+      href="https://github.com/Sid5488"
+      target="_blank"
+    >
+      <button mat-button color="primary" mat-raised-button>
+        <mat-icon>add</mat-icon>
+        Repositories
+      </button>
+    </a>
+  </mat-toolbar-row>
+</mat-toolbar>
+
+<section>
+  <mat-tab-group
+    mat-align-tabs="start"
+    style="padding-top: 40px; padding-left: 2%; padding-right: 2%;"
+  >
+    <mat-tab label="Cadastrar Usuário">
+      <div
+        fxLayout="row"
+        fxLayoutAlign="start center"
+        style="padding: 2%;"
+      >
+        <div style="margin: 0.5%;">
+          <div class="container d-flex justify-content-center">
+            <div class="container-form">
+              <form [formGroup]="userGroup">
+                <mat-form-field appearance="fill">
+                  <mat-label>Name</mat-label>
+                  <input
+                    matInput
+                    placeholder="Bruce Wayne"
+                    formControlName="name"
+                    required
+                    minlength="4"
+                    maxlength="50"
+                  >
+                  <div
+                    *ngIf="name.invalid && (name.dirty || name.touched)"
+                    class="alert"
+                  >
+                    <div *ngIf="name.errors?.['required']">
+                      Name is required.
+                    </div>
+
+                    <div *ngIf="name.errors?.['minlength']">
+                      Name must be at least 3 characters long.
+                    </div>
+
+                    <div *ngIf="name.errors?.['maxlength']">
+                      Name must be at least 3 characters long.
+                    </div>
+                  </div>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill">
+                  <mat-label>Username</mat-label>
+                  <input
+                    matInput
+                    placeholder="batman"
+                    formControlName="username"
+                    required
+                    minlength="4"
+                    maxlength="50"
+                  >
+                </mat-form-field>
+
+                <mat-form-field appearance="fill">
+                  <mat-label>password</mat-label>
+                  <input
+                    type="password"
+                    matInput
+                    placeholder="mathar&thomas"
+                    formControlName="password"
+                    required
+                    minlength="4"
+                    maxlength="50"
+                  >
+                </mat-form-field>
+
+                <mat-form-field appearance="fill">
+                  <mat-label>Role</mat-label>
+                  <mat-select formControlName="role" required>
+                    <mat-option *ngFor="let role of roles" [value]="role.value">
+                      {{role.label}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <button
+                  mat-button
+                  color="primary"
+                  mat-raised-button
+                >Salvar</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-tab>
+
+    <mat-tab label="Lista de Usuários">
+      <div
+        fxLayout="row"
+        fxLayoutAlign="start center"
+        style="padding: 2%;"
+      >
+        <div style="margin: 0.5%;">
+          <div class="container d-flex justify-content-center">
+            <div class="col-12 col-8">
+              <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Username</th>
+                    <th>Role</th>
+                    <th>Ação</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <ng-container *ngFor="let user of users">
+                    <tr>
+                      <td>
+                        <p>
+                          a
+                        </p>
+                      </td>
+
+                      <td>
+                        <p>
+                          a
+                        </p>
+                      </td>
+
+                      <td>
+                        <p>
+                          a
+                        </p>
+                      </td>
+
+                      <td class="d-flex justify-content-between">
+                        <a routerLink="/update/">
+                          <button
+                            type="button"
+                            class="btn btn-warning"
+                            data-toggle="modal"
+                            data-target="#exampleModal"
+                          >
+                            Editar
+                          </button>
+                        </a>
+
+                        <a routerLink="/delete/">
+                          <button
+                            type="button"
+                            class="btn btn-danger"
+                            data-toggle="modal"
+                            data-target="#exampleModal"
+                          >
+                            Apagar
+                          </button>
+                        </a>
+                      </td>
+                    </tr>
+                  </ng-container>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</section>
