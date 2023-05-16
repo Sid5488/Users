@@ -1,6 +1,6 @@
 <section>
   <div class="container">
-    <form [formGroup]="userGroup">
+    <form [formGroup]="userGroup" class="mat-elevation-z8">
       <h1>Login</h1>
 
       <div>
@@ -10,7 +10,26 @@
             matInput
             placeholder="login"
             formControlName="username"
+            required
+            minlength="3"
+            maxlength="30"
           >
+          <div
+            *ngIf="username.invalid && (username.dirty || username.touched)"
+            class="alert"
+          >
+            <div *ngIf="username.errors?.['required']">
+              username is required.
+            </div>
+
+            <div *ngIf="username.errors?.['minlength']">
+              username must be at least 3 characters long.
+            </div>
+
+            <div *ngIf="username.errors?.['maxlength']">
+              username must be at least 3 characters long.
+            </div>
+          </div>
         </mat-form-field>
 
         <mat-form-field appearance="fill">
@@ -20,7 +39,26 @@
             placeholder="123"
             type="password"
             formControlName="password"
+            required
+            minlength="3"
+            maxlength="30"
           >
+          <div
+            *ngIf="password.invalid && (password.dirty || password.touched)"
+            class="alert"
+          >
+            <div *ngIf="password.errors?.['required']">
+              password is required.
+            </div>
+
+            <div *ngIf="password.errors?.['minlength']">
+              password must be at least 3 characters long.
+            </div>
+
+            <div *ngIf="password.errors?.['maxlength']">
+              password must be at least 3 characters long.
+            </div>
+          </div>
         </mat-form-field>
       </div>
 

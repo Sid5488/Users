@@ -46,10 +46,12 @@ namespace Users.WebAPI
                 opt.AddPolicy("AllowOrigin", policy => policy.AllowAnyOrigin());
                 opt.AddPolicy("AllowHeader", policy => policy.AllowAnyHeader());
                 opt.AddPolicy("AllowMethod", policy => policy.AllowAnyMethod());
+                opt.AddPolicy("AllowCredentials", policy => policy.AllowCredentials());
             });
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+            services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IRepository, Repository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserService, UserService>();

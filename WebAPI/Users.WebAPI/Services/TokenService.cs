@@ -8,9 +8,9 @@ using Users.WebAPI.Tools;
 
 namespace Users.WebAPI.Services
 {
-    public static class TokenService
+    public class TokenService : ITokenService
     {
-        public static string GenerateToken(UserModel user)
+        public string GenerateToken(UserModel user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(Settings.Secret);

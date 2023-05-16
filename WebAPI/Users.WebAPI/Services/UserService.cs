@@ -14,16 +14,20 @@ namespace Users.WebAPI.Services
         private readonly IRepository _repository;
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
+        private readonly ITokenService _tokenService;
 
         public UserService(
-            IUserRepository userRepository, 
-            IRepository repository, 
-            IMapper mapper
+            IUserRepository userRepository,
+            IRepository repository,
+            IMapper mapper,
+            ITokenService tokenService
         )
         {
             _userRepository = userRepository;
             _repository = repository;
             _mapper = mapper;
+            _tokenService = tokenService;
+
         }
 
         public async Task<dynamic> AuthenticateUser(string username, string password)
@@ -33,7 +37,7 @@ namespace Users.WebAPI.Services
             if (user == null)
                 return null;
 
-            var token = TokenService.GenerateToken(user);
+            var token = _tokenService.GenerateToken(user);
             var mapperDTO = new
             {
                 User = _mapper.Map<UserDTO>(user),
@@ -67,8 +71,11 @@ namespace Users.WebAPI.Services
             var user = await GetById(id);
             var exists = await GetByUsername(model.Username);
 
-            if (exists != null)
-                return "User already exists";
+            if(user.Username != model.Username)
+            {
+                if (exists != null)
+                    return "User already exists";
+            }
 
             if (user == null)
                 return "User not found";
@@ -93,7 +100,7 @@ namespace Users.WebAPI.Services
 
         public async Task<UserModel> GetByUsername(string username)
         {
-            var user = await _userRepository.Get(username);
+            var user = await _userRepository.Get(username, false);
 
             return user;
         }
@@ -113,10 +120,18 @@ namespace Users.WebAPI.Services
             return true;
         }
 
-        public async Task<IEnumerable<UserDTO>> Get(PageParams pageParams)
+        public async Task<IEnumerable<UserDTO>> GetPagineted(PageParams pageParams)
         {
-            var users = await _userRepository.Get(pageParams);
+            var users = await _userRepository.GetPagineted(pageParams);
             var mappeds = _mapper.Map<IEnumerable<UserDTO>>(users);
+
+            return mappeds;
+        }
+
+        public async Task<List<UserDTO>> Get()
+        {
+            var users = await _userRepository.Get();
+            var mappeds = _mapper.Map<List<UserDTO>>(users);
 
             return mappeds;
         }

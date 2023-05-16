@@ -33,7 +33,7 @@
         <div style="margin: 0.5%;">
           <div class="container d-flex justify-content-center">
             <div class="container-form">
-              <form [formGroup]="userGroup">
+              <form class="mat-elevation-z8" [formGroup]="userGroup">
                 <mat-form-field appearance="fill">
                   <mat-label>Name</mat-label>
                   <input
@@ -41,8 +41,8 @@
                     placeholder="Bruce Wayne"
                     formControlName="name"
                     required
-                    minlength="4"
-                    maxlength="50"
+                    minlength="3"
+                    maxlength="30"
                   >
                   <div
                     *ngIf="name.invalid && (name.dirty || name.touched)"
@@ -69,9 +69,25 @@
                     placeholder="batman"
                     formControlName="username"
                     required
-                    minlength="4"
-                    maxlength="50"
+                    minlength="3"
+                    maxlength="30"
                   >
+                  <div
+                    *ngIf="username.invalid && (username.dirty || username.touched)"
+                    class="alert"
+                  >
+                    <div *ngIf="username.errors?.['required']">
+                      username is required.
+                    </div>
+
+                    <div *ngIf="username.errors?.['minlength']">
+                      username must be at least 3 characters long.
+                    </div>
+
+                    <div *ngIf="username.errors?.['maxlength']">
+                      username must be at least 3 characters long.
+                    </div>
+                  </div>
                 </mat-form-field>
 
                 <mat-form-field appearance="fill">
@@ -82,9 +98,25 @@
                     placeholder="mathar&thomas"
                     formControlName="password"
                     required
-                    minlength="4"
-                    maxlength="50"
+                    minlength="3"
+                    maxlength="30"
                   >
+                  <div
+                    *ngIf="password.invalid && (password.dirty || password.touched)"
+                    class="alert"
+                  >
+                    <div *ngIf="password.errors?.['required']">
+                      password is required.
+                    </div>
+
+                    <div *ngIf="password.errors?.['minlength']">
+                      password must be at least 3 characters long.
+                    </div>
+
+                    <div *ngIf="password.errors?.['maxlength']">
+                      password must be at least 3 characters long.
+                    </div>
+                  </div>
                 </mat-form-field>
 
                 <mat-form-field appearance="fill">
@@ -99,6 +131,7 @@
                 <button
                   mat-button
                   color="primary"
+                  (click)="createUser()"
                   mat-raised-button
                 >Salvar</button>
               </form>
@@ -109,77 +142,7 @@
     </mat-tab>
 
     <mat-tab label="Lista de Usuários">
-      <div
-        fxLayout="row"
-        fxLayoutAlign="start center"
-        style="padding: 2%;"
-      >
-        <div style="margin: 0.5%;">
-          <div class="container d-flex justify-content-center">
-            <div class="col-12 col-8">
-              <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-              <table class="table table-bordered">
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Username</th>
-                    <th>Role</th>
-                    <th>Ação</th>
-                  </tr>
-                </thead>
-
-                <tbody>
-                  <ng-container *ngFor="let user of users">
-                    <tr>
-                      <td>
-                        <p>
-                          a
-                        </p>
-                      </td>
-
-                      <td>
-                        <p>
-                          a
-                        </p>
-                      </td>
-
-                      <td>
-                        <p>
-                          a
-                        </p>
-                      </td>
-
-                      <td class="d-flex justify-content-between">
-                        <a routerLink="/update/">
-                          <button
-                            type="button"
-                            class="btn btn-warning"
-                            data-toggle="modal"
-                            data-target="#exampleModal"
-                          >
-                            Editar
-                          </button>
-                        </a>
-
-                        <a routerLink="/delete/">
-                          <button
-                            type="button"
-                            class="btn btn-danger"
-                            data-toggle="modal"
-                            data-target="#exampleModal"
-                          >
-                            Apagar
-                          </button>
-                        </a>
-                      </td>
-                    </tr>
-                  </ng-container>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
+      <app-users-table></app-users-table>
     </mat-tab>
   </mat-tab-group>
 </section>

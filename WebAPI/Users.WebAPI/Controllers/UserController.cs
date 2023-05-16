@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 using Users.WebAPI.DTOs;
 using Users.WebAPI.Helpers;
@@ -19,18 +20,26 @@ namespace Users.WebAPI.Controllers
             _userService = userService;
         }
 
-        [HttpGet("health-check")]
-        [AllowAnonymous]
-        public ActionResult Get()
+        [HttpGet]
+        [Authorize(Roles = "ReadWrite,Read")]
+        public async Task<ActionResult<UserDTO>> GetPagineted([FromQuery] PageParams pageParams)
         {
-            return Ok(new { Message = "Online" });
+            return Ok(await _userService.GetPagineted(pageParams));
         }
 
         [HttpGet]
         [Authorize(Roles = "ReadWrite,Read")]
-        public async Task<ActionResult<UserDTO>> Get([FromQuery] PageParams pageParams)
+        [Route("all")]
+        public async Task<ActionResult<UserDTO>> Get()
         {
-            return Ok(await _userService.Get(pageParams));
+            return Ok(await _userService.Get());
+        }
+
+        [HttpGet("{id}")]
+        [Authorize(Roles = "ReadWrite,Read")]
+        public async Task<ActionResult<UserDTO>> GetById(int id)
+        {
+            return Ok(await _userService.GetById(id));
         }
 
         [HttpPost]
@@ -71,7 +80,9 @@ namespace Users.WebAPI.Controllers
             if (!ModelState.IsValid)
                 return BadRequest();
 
-            if (User.Identity.Name != id.ToString() && User.IsInRole("Read"))
+            var user = await _userService.GetById(model.Id);
+
+            if (model.Id != id && user.Role != "ReadWrite")
                 return Unauthorized(new { Message = "You can't change data from another user" });
 
             var result = await _userService.Update(id, model);
@@ -82,14 +93,16 @@ namespace Users.WebAPI.Controllers
             return Ok(result);
         }
 
-        [HttpDelete("{id}")]
-        [Authorize(Roles = "ReadWrite")]
-        public async Task<ActionResult> Delete(int id)
+        [HttpDelete("{id}/{userId}")]
+        [Authorize(Roles = "ReadWrite,Read")]
+        public async Task<ActionResult> Delete(int id, int userId)
         {
             if (id <= 0)
                 return BadRequest(new { Message = "Field Id must be bigger than 0" });
 
-            if (User.Identity.Name != id.ToString() && User.IsInRole("Read"))
+            var user = await _userService.GetById(userId);
+
+            if (user.Id != id && user.Role != "ReadWrite")
                 return Unauthorized(new { Message = "You can't change data from another user" });
 
             var result = await _userService.Delete(id);

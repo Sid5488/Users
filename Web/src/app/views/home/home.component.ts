@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UserService } from 'src/app/shared/services/user.service';
 
-interface Role {
+export interface Role {
   value: string;
   label: string;
 }
@@ -19,10 +20,9 @@ export class HomeComponent implements OnInit {
     { value: 'Read', label: 'Normal Access' }
   ];
 
-  public users: any = [];
-
   constructor(
     private _fb: FormBuilder,
+    private readonly _userService: UserService
   ) {}
 
   get name() {
@@ -41,7 +41,7 @@ export class HomeComponent implements OnInit {
     return this.userGroup.get('role')!;
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.userGroup = this._fb.group({
       name: new FormControl(
         '',
@@ -69,5 +69,13 @@ export class HomeComponent implements OnInit {
       ),
       role: new FormControl('', [Validators.required])
     });
+  }
+
+  public async createUser(): Promise<void> {
+    const { name, username, password, role } = this.userGroup?.value;
+
+    await this._userService
+      .create(name, username, password, role)
+      .then(_ => window.location.reload());
   }
 }

@@ -30,7 +30,7 @@ export class AuthApiService {
   public getAuthorizationToken() {
     const token = localStorage.getItem('@Users.brazuca::token');
 
-    return token;
+    return token?.replaceAll('"', '');
   }
 
   public getTokenExpirationDate(token: string): Date | null {

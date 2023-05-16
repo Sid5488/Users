@@ -34,6 +34,7 @@ namespace Users.WebAPI.DTOs
 
     public class SaveUserDTO
     {
+        public int Id { get; set; }
         [Required(ErrorMessage = "The field {0} is required")]
         [StringLength(50, MinimumLength = 3, ErrorMessage = "The field must contain between 3 to 50 characters")]
         public string Name { get; set; }

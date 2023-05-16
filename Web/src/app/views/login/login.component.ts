@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 import { UserModel } from 'src/app/shared/models/user.model';
 import { AuthApiService } from 'src/app/shared/services/auth-api.service';
@@ -17,13 +18,44 @@ export class LoginComponent implements OnInit {
   constructor(
     private _fb: FormBuilder,
     private readonly _authApiService: AuthApiService,
-    private readonly _userService: UserService
+    private readonly _userService: UserService,
+    private readonly _router: Router
   ) {}
+
+  get name() {
+    return this.userGroup.get('name')!;
+  }
+
+  get username() {
+    return this.userGroup.get('username')!;
+  }
+
+  get password() {
+    return this.userGroup.get('password')!;
+  }
+
+  get role() {
+    return this.userGroup.get('role')!;
+  }
 
   ngOnInit(): void {
     this.userGroup = this._fb.group({
-      username: ['', [Validators.required]],
-      password: ['', [Validators.required]]
+      username: new FormControl(
+        '',
+        [
+          Validators.required,
+          Validators.minLength(3),
+          Validators.maxLength(50)
+        ]
+      ),
+      password: new FormControl(
+        '',
+        [
+          Validators.required,
+          Validators.minLength(3),
+          Validators.maxLength(50)
+        ]
+      ),
     });
   }
 
@@ -31,11 +63,19 @@ export class LoginComponent implements OnInit {
     const { username, password } = this.userGroup?.value;
 
     this._authApiService.login(username, password)
-      .subscribe(({ token }) => {
-        localStorage.setItem('@Users.brazuca::token', JSON.stringify(token));
-      });
+      .subscribe(({ token, user }) => {
+        const tokenAccess = localStorage.getItem('@Users.brazuca::token');
+        
+        if (tokenAccess) {
+          localStorage.removeItem('@Users.brazuca::token');
+          localStorage.removeItem('@Users.brazuca::id');
+        }
 
-    this.userGroup?.reset();
+        localStorage.setItem('@Users.brazuca::token', JSON.stringify(token));
+        localStorage.setItem('@Users.brazuca::id', JSON.stringify(user?.id));
+
+        this._router.navigate(['/home']);
+      });
   }
 
   async getUsers() {

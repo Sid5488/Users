@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Users.WebAPI.Data;
@@ -16,7 +17,7 @@ namespace Users.WebAPI.Repositories
             _context = context;
         }
 
-        public async Task<PagaList<UserModel>> Get(PageParams pageParams)
+        public async Task<PagaList<UserModel>> GetPagineted(PageParams pageParams)
         {
             IQueryable<UserModel> query = _context.Users
                 .AsNoTracking()
@@ -25,6 +26,17 @@ namespace Users.WebAPI.Repositories
             query = query.OrderBy(x => x.Id);
 
             return await PagaList<UserModel>.CreateAsync(query, pageParams.PageNumber, pageParams.PageSize);
+        }
+
+        public async Task<List<UserModel>> Get()
+        {
+            IQueryable<UserModel> query = _context.Users
+                .AsNoTracking()
+                .Where(x => x.RemovedAt == null);
+
+            query = query.OrderBy(x => x.Id);
+
+            return await query.ToListAsync();
         }
 
         public async Task<UserModel> Get(string username, string password)
@@ -46,14 +58,14 @@ namespace Users.WebAPI.Repositories
             return await query.FirstOrDefaultAsync(x => x.Id == id && x.RemovedAt == null);
         }
 
-        public async Task<UserModel> Get(string username, bool removed = true)
+        public async Task<UserModel> Get(string username, bool removed = false)
         {
             IQueryable<UserModel> query = _context.Users.AsNoTracking();
 
-            return await query.FirstOrDefaultAsync( x => !removed 
-                ? x.Username == username && x.RemovedAt != null
-                : x.Username == username
-            );
+            if (!removed)
+                return await query.FirstOrDefaultAsync(x => x.Username == username && x.RemovedAt == null);
+
+            return await query.FirstOrDefaultAsync(x => x.Username == username);
         }
     }
 }

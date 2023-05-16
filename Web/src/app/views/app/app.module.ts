@@ -13,17 +13,25 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTableModule } from '@angular/material/table';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 import { AppRoutingModule } from '../../app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from '../login/login.component';
 import { HomeComponent } from '../home/home.component';
+import { UsersTableComponent } from 'src/app/shared/components/users-table/users-table.component';
+import { UpdateComponent } from 'src/app/shared/components/update/update.component';
+import { DeleteComponent } from 'src/app/shared/components/delete/delete.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    HomeComponent
+    HomeComponent,
+    UsersTableComponent,
+    UpdateComponent,
+    DeleteComponent
   ],
   imports: [
     BrowserModule,
@@ -41,7 +49,9 @@ import { HomeComponent } from '../home/home.component';
     MatFormFieldModule,
     MatProgressBarModule,
     MatSelectModule,
-    MatInputModule
+    MatInputModule,
+    MatPaginatorModule,
+    MatSnackBarModule
   ],
   providers: [
   ],

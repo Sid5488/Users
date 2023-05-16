@@ -1,0 +1,131 @@
+<mat-tab-group
+  mat-align-tabs="start"
+  style="padding-top: 40px; padding-left: 2%; padding-right: 2%;"
+>
+
+  <mat-tab label="Atualizar Jogador">
+    <div
+      fxLayout="row"
+      fxLayoutAlign="start center"
+      style="padding: 2%;"
+    >
+      <div style="margin: 0.5%;">
+        <div class="container d-flex justify-content-center">
+          <div class="container-form">
+            <form *ngIf="!loading" class="mat-elevation-z8" [formGroup]="userGroup">
+              <mat-form-field appearance="fill">
+                <mat-label>Name</mat-label>
+                <input
+                  matInput
+                  placeholder="Bruce Wayne"
+                  formControlName="name"
+                  required
+                  minlength="4"
+                  maxlength="50"
+                >
+                <div
+                  *ngIf="name.invalid && (name.dirty || name.touched)"
+                  class="alert"
+                >
+                  <div *ngIf="name.errors?.['required']">
+                    Name is required.
+                  </div>
+
+                  <div *ngIf="name.errors?.['minlength']">
+                    Name must be at least 3 characters long.
+                  </div>
+
+                  <div *ngIf="name.errors?.['maxlength']">
+                    Name must be at least 3 characters long.
+                  </div>
+                </div>
+              </mat-form-field>
+
+              <mat-form-field appearance="fill">
+                <mat-label>Username</mat-label>
+                <input
+                  matInput
+                  placeholder="batman"
+                  formControlName="username"
+                  required
+                  minlength="4"
+                  maxlength="50"
+                >
+                <div
+                    *ngIf="username.invalid && (username.dirty || username.touched)"
+                    class="alert"
+                  >
+                    <div *ngIf="username.errors?.['required']">
+                      username is required.
+                    </div>
+
+                    <div *ngIf="username.errors?.['minlength']">
+                      username must be at least 3 characters long.
+                    </div>
+
+                    <div *ngIf="username.errors?.['maxlength']">
+                      username must be at least 3 characters long.
+                    </div>
+                  </div>
+              </mat-form-field>
+
+              <mat-form-field appearance="fill">
+                <mat-label>password</mat-label>
+                <input
+                  type="password"
+                  matInput
+                  placeholder="mathar&thomas"
+                  formControlName="password"
+                  required
+                  minlength="4"
+                  maxlength="50"
+                >
+                <div
+                    *ngIf="password.invalid && (password.dirty || password.touched)"
+                    class="alert"
+                  >
+                    <div *ngIf="password.errors?.['required']">
+                      password is required.
+                    </div>
+
+                    <div *ngIf="password.errors?.['minlength']">
+                      password must be at least 3 characters long.
+                    </div>
+
+                    <div *ngIf="password.errors?.['maxlength']">
+                      password must be at least 3 characters long.
+                    </div>
+                  </div>
+              </mat-form-field>
+
+              <mat-form-field appearance="fill">
+                <mat-label>Role</mat-label>
+                <mat-select formControlName="role" required>
+                  <mat-option *ngFor="let role of roles" [value]="role.value">
+                    {{role.label}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <a href="/home">
+                <button
+                  type="button"
+                  class="cancel"
+                  mat-raised-button color="warn"
+                >Cancelar</button>
+              </a>
+
+              <button
+                mat-button
+                color="primary"
+                (click)="updateUser()"
+                mat-raised-button
+              >Salvar</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-tab>
+</mat-tab-group>
+

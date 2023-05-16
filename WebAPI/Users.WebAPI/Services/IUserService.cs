@@ -8,7 +8,8 @@ namespace Users.WebAPI.Services
 {
     public interface IUserService
     {
-        Task<IEnumerable<UserDTO>> Get(PageParams pageParams);
+        Task<IEnumerable<UserDTO>> GetPagineted(PageParams pageParams);
+        Task<List<UserDTO>> Get();
         Task<dynamic> AuthenticateUser(string username, string password);
         Task<UserDTO> Create(SaveUserDTO model);
         Task<dynamic> Update(int id, SaveUserDTO model);
