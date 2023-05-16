@@ -14,6 +14,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { AppRoutingModule } from '../../app-routing.module';
 import { AppComponent } from './app.component';
@@ -22,7 +23,7 @@ import { HomeComponent } from '../home/home.component';
 import { UsersTableComponent } from 'src/app/shared/components/users-table/users-table.component';
 import { UpdateComponent } from 'src/app/shared/components/update/update.component';
 import { DeleteComponent } from 'src/app/shared/components/delete/delete.component';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { NewAccountComponent } from '../new-account/new-account.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     HomeComponent,
     UsersTableComponent,
     UpdateComponent,
-    DeleteComponent
+    DeleteComponent,
+    NewAccountComponent
   ],
   imports: [
     BrowserModule,

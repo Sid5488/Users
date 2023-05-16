@@ -1,14 +1,42 @@
 <section>
   <div class="container">
     <form [formGroup]="userGroup" class="mat-elevation-z8">
-      <h1>Login</h1>
+      <h1>Register</h1>
 
       <div>
+        <mat-form-field appearance="fill">
+          <mat-label>Name</mat-label>
+          <input
+            matInput
+            placeholder="Bruce Wayne"
+            formControlName="name"
+            required
+            minlength="3"
+            maxlength="30"
+          >
+          <div
+            *ngIf="name.invalid && (name.dirty || name.touched)"
+            class="alert"
+          >
+            <div *ngIf="name.errors?.['required']">
+              Name is required.
+            </div>
+
+            <div *ngIf="name.errors?.['minlength']">
+              Name must be at least 3 characters long.
+            </div>
+
+            <div *ngIf="name.errors?.['maxlength']">
+              Name must be at least 3 characters long.
+            </div>
+          </div>
+        </mat-form-field>
+
         <mat-form-field appearance="fill">
           <mat-label>Username</mat-label>
           <input
             matInput
-            placeholder="login"
+            placeholder="batman"
             formControlName="username"
             required
             minlength="3"
@@ -33,11 +61,11 @@
         </mat-form-field>
 
         <mat-form-field appearance="fill">
-          <mat-label>Password</mat-label>
+          <mat-label>password</mat-label>
           <input
-            matInput
-            placeholder="123"
             type="password"
+            matInput
+            placeholder="mathar&thomas"
             formControlName="password"
             required
             minlength="3"
@@ -60,15 +88,24 @@
             </div>
           </div>
         </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Role</mat-label>
+          <mat-select formControlName="role" required>
+            <mat-option *ngFor="let role of roles" [value]="role.value">
+              {{role.label}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
       </div>
 
       <button
         mat-raised-button
         color="primary"
         (click)="createUser()"
-      >Login</button>
+      >Save</button>
 
-      <a class="account-login" routerLink="new-account">Don't have an account?</a>
+      <a class="account-login" routerLink="/">Already have an account?</a>
     </form>
   </div>
 </section>

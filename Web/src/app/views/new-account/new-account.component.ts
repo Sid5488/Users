@@ -1,19 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { Role } from '../home/home.component';
 import { UserService } from 'src/app/shared/services/user.service';
-
-export interface Role {
-  value: string;
-  label: string;
-}
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.sass']
+  selector: 'app-new-account',
+  templateUrl: './new-account.component.html',
+  styleUrls: ['./new-account.component.sass']
 })
-export class HomeComponent implements OnInit {
+export class NewAccountComponent implements OnInit {
   public userGroup!: FormGroup;
 
   public readonly roles: Role[] = [

@@ -6,11 +6,16 @@ import { AuthenticatedGuard } from './shared/auth/authenticated.guard';
 import { HomeComponent } from './views/home/home.component';
 import { UpdateComponent } from './shared/components/update/update.component';
 import { DeleteComponent } from './shared/components/delete/delete.component';
+import { NewAccountComponent } from './views/new-account/new-account.component';
 
 const routes: Routes = [
   {
     path: '',
     component: LoginComponent
+  },
+  {
+    path: 'new-account',
+    component: NewAccountComponent
   },
   {
     path: 'home',

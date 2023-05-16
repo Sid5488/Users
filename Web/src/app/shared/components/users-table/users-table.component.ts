@@ -3,6 +3,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { UserService } from '../../services/user.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-users-table',
@@ -19,7 +20,10 @@ export class UsersTableComponent implements AfterViewInit {
   public displayedColumns: string[] = ['name', 'username', 'role', 'action'];
   public dataSource: MatTableDataSource<any>;
 
-  constructor(private readonly _userService: UserService) {
+  constructor(
+    private readonly _userService: UserService,
+    private _snackBar: MatSnackBar
+  ) {
     const none = [{ name: 'none', username: 'none', role: 'none', action: '' }];
     this.getUsers().then();
 
@@ -44,11 +48,17 @@ export class UsersTableComponent implements AfterViewInit {
     setInterval(() => {
       this.loading = true;
     }, 3000);
-    
+
     const users = await this._userService.getUsers().then(
       result => this.dataSource = new MatTableDataSource(result)
-    );
+    ).catch((error: any) => {
+      this.openSnackBar(error.error.message, 'error');
+    });
 
     return users;
+  }
+
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(!message ? "Occured and error" : message, action);
   }
 }
